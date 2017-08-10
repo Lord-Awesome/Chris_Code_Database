@@ -1,8 +1,9 @@
-def play_a_game(board, print_bool, black_input, white_input, display_on_lights_boolean):
+def play_a_game(board, print_bool, black_input, white_input, display_on_lights_boolean, sleep_time):
 
     ## Runs through a game, calling the Black_move and White_move functinos to make moves, then updates the weight grid using the update_weight_grid function
     
     import random
+    import time
     from Black_and_white_moves import Black_Move
     from Black_and_white_moves import White_Move
     from update_weight_grid import update_weight_grid
@@ -17,6 +18,8 @@ def play_a_game(board, print_bool, black_input, white_input, display_on_lights_b
     if display_on_lights_boolean == 1:
         display_reversi_board_on_lights(board)
     for move in range(1, 200):
+
+            time.sleep(sleep_time)
 
             ### Chose Strategies ###
             [black_strategy, white_strategy, black_input, white_input] = strategy_picker(move, black_input, white_input)
