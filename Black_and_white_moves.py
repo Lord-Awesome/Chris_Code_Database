@@ -1,6 +1,6 @@
 ## These functions call the actual move function then print some information and tally the scores. Returns a vector total scores = [white_score, black_score]
 
-def Black_Move(board, move, strategy, print_bool, display_on_lights_boolean):
+def Black_Move(board, move, strategy, print_bool, display_on_lights_boolean, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
     
     from move_executor import move_executor as my_move
     from display_reversi_board_on_lights import display_reversi_board_on_lights
@@ -28,10 +28,10 @@ def Black_Move(board, move, strategy, print_bool, display_on_lights_boolean):
 
     total_scores = [white_score, black_score]
     if display_on_lights_boolean == 1:
-        display_reversi_board_on_lights(board)
+        display_reversi_board_on_lights(board, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
     return total_scores
 
-def White_Move(board, move, strategy, print_bool, display_on_lights_boolean):
+def White_Move(board, move, strategy, print_bool, display_on_lights_boolean, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
     
     from move_executor import move_executor as my_move
     from display_reversi_board_on_lights import display_reversi_board_on_lights
@@ -57,5 +57,5 @@ def White_Move(board, move, strategy, print_bool, display_on_lights_boolean):
 
     total_scores = [white_score, black_score]
     if display_on_lights_boolean == 1:
-        display_reversi_board_on_lights(board)
+        display_reversi_board_on_lights(board, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
     return total_scores

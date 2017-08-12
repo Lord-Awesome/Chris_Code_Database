@@ -1,4 +1,4 @@
-def display_reversi_board_on_lights(board):
+def display_reversi_board_on_lights(board, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
 
     
     import Adafruit_WS2801
@@ -11,9 +11,10 @@ def display_reversi_board_on_lights(board):
     pixels.clear()
     pixels.show()
 
-    black_color = Adafruit_WS2801.RGB_to_color(0,0,255) #green
-    white_color = Adafruit_WS2801.RGB_to_color(255,0,0) #red
-
+##    black_color = Adafruit_WS2801.RGB_to_color(0,0,255) #green
+    black_color = Adafruit_WS2801.RGB_to_color(R_value_black, B_value_black, G_value_black)
+##    white_color = Adafruit_WS2801.RGB_to_color(255,0,0) #red
+    white_color = Adafruit_WS2801.RGB_to_color(R_value_white, B_value_white, G_value_white)
     for i in range(8):
         for j in range(8):
             if board[i,j] == 1:

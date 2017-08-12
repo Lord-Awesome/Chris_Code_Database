@@ -1,4 +1,4 @@
-def start_tic_tac_toe(display_on_lights_boolean, summary_print_bool, input_number_of_trains, input_number_of_games, x_win_weighting, o_win_weighting):
+def start_tic_tac_toe(display_on_lights_boolean, display_on_lights_train_boolean, summary_print_bool, input_number_of_trains, input_number_of_games, x_win_weighting, o_win_weighting, sleep_time, sleep_time_train):
     import random
     import time
     import itertools
@@ -16,6 +16,7 @@ def start_tic_tac_toe(display_on_lights_boolean, summary_print_bool, input_numbe
     draw_wins_list = []
     #summary_print_bool = True
 
+
     for j in range(1):
         for i in range(1):
             #print("Iteration ", (100*j)+i+1, ". Win weighting is ", j+1, " and lose weighting is ", i+1)
@@ -28,7 +29,8 @@ def start_tic_tac_toe(display_on_lights_boolean, summary_print_bool, input_numbe
             print_once_per_game_bool = False
             print_every_move_bool = False  
             number_of_games = input_number_of_trains
-            [X_wins, O_wins, draw_wins] = play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_boolean)
+            print("Training...")
+            [X_wins, O_wins, draw_wins] = play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_train_boolean, sleep_time_train)
 
 
             # ----------------------------------- Execute Playing --------------------------------------------------------------- #
@@ -37,7 +39,7 @@ def start_tic_tac_toe(display_on_lights_boolean, summary_print_bool, input_numbe
             print_once_per_game_bool = True
             print_every_move_bool = True
             number_of_games = input_number_of_games
-            [X_wins, O_wins, draw_wins] = play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_boolean)
+            [X_wins, O_wins, draw_wins] = play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_boolean, sleep_time)
 
             X_wins_list.append(X_wins)
             O_wins_list.append(O_wins)

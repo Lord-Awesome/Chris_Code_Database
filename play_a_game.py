@@ -1,4 +1,4 @@
-def play_a_game(board, print_bool, black_input, white_input, display_on_lights_boolean, sleep_time):
+def play_a_game(board, print_bool, black_input, white_input, display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
 
     ## Runs through a game, calling the Black_move and White_move functinos to make moves, then updates the weight grid using the update_weight_grid function
     
@@ -35,7 +35,7 @@ def play_a_game(board, print_bool, black_input, white_input, display_on_lights_b
                 if output_score_black != [-100]:  # the -100 value indicates the end of the game, and there's a bunch of checks to see if the game is over. look at removing this and making an end game function in the future
                     previous_score_black = output_score_black
 
-                output_scores = Black_Move(board, move, black_strategy, print_bool, display_on_lights_boolean)
+                output_scores = Black_Move(board, move, black_strategy, print_bool, display_on_lights_boolean, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
                 #print(output_scores)
 
                 if output_scores != [-100]:
@@ -56,7 +56,7 @@ def play_a_game(board, print_bool, black_input, white_input, display_on_lights_b
                     print('-'*100)
                 if output_score_white != [-100]:
                     previous_score_white = output_score_white
-                output_scores = White_Move(board, move, white_strategy, print_bool, display_on_lights_boolean)
+                output_scores = White_Move(board, move, white_strategy, print_bool, display_on_lights_boolean, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
                 if output_scores != [-100]:
                     output_score_white = output_scores[0]
                     output_score_black = output_scores[1]

@@ -1,4 +1,4 @@
-def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time):
+def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
     # Program starts here. You can choose between playing a single game, and training the computer against itself over n iterations
 
     import numpy as np
@@ -25,7 +25,7 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
             print(board)
         for i in range(number_of_games):
             board= board_setup()
-            winner = play_a_game(board, print_bool_no, black_input_no, white_input_no,display_on_lights_boolean, sleep_time)
+            winner = play_a_game(board, print_bool_no, black_input_no, white_input_no,display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
         x = input('Press Enter to Exit')
 
     if train == 'yes':
@@ -45,7 +45,7 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
             print('-'*100)
 
             board= board_setup()
-            winner = play_a_game(board, print_bool_yes, black_input_yes, white_input_yes, display_on_lights_boolean, 0)
+            winner = play_a_game(board, print_bool_yes, black_input_yes, white_input_yes, display_on_lights_boolean, 0, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
 
             winner_list.append(winner)
 
@@ -77,7 +77,7 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
 
         for i in range(number_of_games):
             board= board_setup()
-            winner = play_a_game(board, print_bool_no, black_input_yes, white_input_yes, display_on_lights_boolean, sleep_time)
+            winner = play_a_game(board, print_bool_no, black_input_yes, white_input_yes, display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
 
         
 

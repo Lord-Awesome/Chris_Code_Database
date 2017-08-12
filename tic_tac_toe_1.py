@@ -1,4 +1,4 @@
-def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_bool, print_every_move_bool, display_on_lights_boolean):
+def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_bool, print_every_move_bool, display_on_lights_boolean, sleep_time):
 
     import random
     import time
@@ -560,6 +560,7 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
                 print_move_result(move, move_position)
                 if print_every_move_bool == True:
                     print_board()
+                time.sleep(sleep_time)
             except Game_Over_Winner:
                 winner_list.append(move_char)
                 update_weight_vectors(x_moves, move_char)
