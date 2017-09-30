@@ -1,6 +1,8 @@
+from __init__ import *
 def non_serialized_hue_shift(wait, speed):
 
     # Generate the colors
+    color_list = []
     for i in range(math.floor(256/speed)):
         color = Adafruit_WS2801.RGB_to_color(0, 255, math.floor(i*speed))
         color_list.append(color)

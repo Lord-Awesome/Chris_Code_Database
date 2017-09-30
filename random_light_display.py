@@ -1,4 +1,7 @@
+from __init__ import *
 def random_light_display(wait, speed):
+
+    color_list = []
 
     # Generate the colors
     for i in range(math.floor(256/speed)):

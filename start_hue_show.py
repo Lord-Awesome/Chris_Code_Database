@@ -1,4 +1,4 @@
-def start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4):
+def start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4, divisor):
 
     try:
         import Adafruit_WS2801
@@ -26,7 +26,7 @@ def start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4):
         for i in range(1):
             #wait1 = 0
             #speed1 = 1.75 
-            simultaneous_hue_shift(wait1, speed1)
+            simultaneous_hue_shift(wait1, speed1, divisor)
 
         # Function 2. Sequential LEDs display sequential colors in the spectrum. Each LED iterates through the spectrum.
         # Increasing speed makes the iteration coarser so the effect is more noticeable.

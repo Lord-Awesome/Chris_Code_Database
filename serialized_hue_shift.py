@@ -1,3 +1,4 @@
+from __init__ import *
 def serialized_hue_shift(wait, speed):
     pixels.clear()
     pixels.show()

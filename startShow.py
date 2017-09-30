@@ -9,7 +9,7 @@ def startShow(show_dict):
         #return
         
 
-    #showName = "Clock"
+    showName = "Big_Text_Scroller"
 
     from start_hue_show import start_hue_show
     from start_autonomous_snake import start_autonomous_snake
@@ -32,6 +32,7 @@ def startShow(show_dict):
         speed3 = 1.75
         wait4 = 0
         speed4 = 1.75
+        divisor = 8
 
         ### Replace defaults with arguments from queue ###
         try: wait1 = show_dict['wait1']
@@ -50,10 +51,12 @@ def startShow(show_dict):
         except: print("Warning: could not get wait4")
         try: speed4 = show_dict['speed4']
         except: print("Warning: could not get speed4")
+        try: divisor = show_dict["divisor"]
+        except: print("Warning: could not get divisor")
 
         ### Call program ###
 
-        start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4)
+        start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4, divisor)
 
     if showName == "Snake":
         #def autonomous_snake(sleep_time=0.5, wait_times=[0.05, 0.05, 0.05, 0.05, 0.05, 0.1, 0.15, 0.2, 0.2], number_of_nom_noms=2, number_of_bombs=5, number_of_caffeine_pills=5, level_0_nom_nom=10, level_1_nom_nom=7, level_2_nom_nom=4, display_on_lights_boolean=1)
@@ -303,11 +306,12 @@ def startShow(show_dict):
         # Also takes continuous_bool to determine if it should loop the message forever
         
         ### Defaults ###
-        input_string = "Go Blue!"
+        input_string = "go blue!"
         rainbow_bool = False
         lights_bool = True
         text_color = "Yellow"
-        loop_count = 2
+        loop_count = -1
+        divisor = 8
 
         ### Replace defaults with arguments from queue ###
         try: input_string = show_dict['input_string']
@@ -320,15 +324,17 @@ def startShow(show_dict):
         except: print("Warning: could not get text_color")
         try: loop_count = show_dict['loop_count']
         except: print("Warning: could not get loop_count")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
 
 
         ### Call program ###
         if loop_count == -1:
             while 1:
-                start_big_text_scroller(input_string, rainbow_bool, lights_bool, text_color)
+                start_big_text_scroller(input_string, rainbow_bool, lights_bool, text_color,divisor)
         elif loop_count > 0:
             for i in range(loop_count):
-                start_big_text_scroller(input_string, rainbow_bool, lights_bool, text_color)
+                start_big_text_scroller(input_string, rainbow_bool, lights_bool, text_color,divisor)
         else:
             print("Invalid entry for loop_count")
         
