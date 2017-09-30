@@ -9,7 +9,7 @@ def startShow(show_dict):
         #return
         
 
-    showName = "Big_Text_Scroller"
+    showName = "Hue Show"
 
     from start_hue_show import start_hue_show
     from start_autonomous_snake import start_autonomous_snake
@@ -25,14 +25,21 @@ def startShow(show_dict):
 
         ### Defaults ###
         wait1 = 0
-        speed1 = 1.75
+        # speed1 = 1.75
+        speed1 = 3
         wait2 = 0
-        speed2 = 1.75
+        # speed2 = 1.75
+        speed2 = 3
         wait3 = 0
-        speed3 = 1.75
+        # speed3 = 1.75
+        speed3 = 3
         wait4 = 0
-        speed4 = 1.75
-        divisor = 8
+        # speed4 = 1.75
+        speed4 = 3
+        divisor1 = 32
+        divisor2 = 20
+        divisor3 =8
+        divisor4 = 8
 
         ### Replace defaults with arguments from queue ###
         try: wait1 = show_dict['wait1']
@@ -51,12 +58,19 @@ def startShow(show_dict):
         except: print("Warning: could not get wait4")
         try: speed4 = show_dict['speed4']
         except: print("Warning: could not get speed4")
-        try: divisor = show_dict["divisor"]
-        except: print("Warning: could not get divisor")
+        try: divisor = show_dict["divisor1"]
+        except: print("Warning: could not get divisor1")
+        try: divisor = show_dict["divisor2"]
+        except: print("Warning: could not get divisor2")
+        try: divisor = show_dict["divisor3"]
+        except: print("Warning: could not get divisor3")
+        try: divisor = show_dict["divisor4"]
+        except: print("Warning: could not get divisor4")
+
 
         ### Call program ###
 
-        start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4, divisor)
+        start_hue_show(wait1, speed1, wait2, speed2, wait3, speed3, wait4, speed4, divisor1, divisor2, divisor3, divisor4)
 
     if showName == "Snake":
         #def autonomous_snake(sleep_time=0.5, wait_times=[0.05, 0.05, 0.05, 0.05, 0.05, 0.1, 0.15, 0.2, 0.2], number_of_nom_noms=2, number_of_bombs=5, number_of_caffeine_pills=5, level_0_nom_nom=10, level_1_nom_nom=7, level_2_nom_nom=4, display_on_lights_boolean=1)
