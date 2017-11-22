@@ -1,13 +1,15 @@
+from __init__ import *
 def move_executor(board, my_color, opposite_color, strategy, print_bool):
 
     from calculate_legal_moves import calculate_legal_moves
     from strategy_executor import strategy_executor
+    board_original = board.copy()
 
     try:
         [net_legal_moves, net_scores, net_capture_scores, player_move, legal_moves_index, score_index] = calculate_legal_moves(board, my_color, opposite_color, strategy, print_bool)
     except:
         #print("either no legal moves or problem with calculate_legal_moves")
-        return [-100]
+        return [[-100], [-100,-100]]
     location_to_place = strategy_executor(strategy, net_legal_moves, net_scores, print_bool, net_capture_scores, player_move)
     if print_bool == 1:
         print('Chosen location: ', location_to_place)
@@ -62,4 +64,4 @@ def move_executor(board, my_color, opposite_color, strategy, print_bool):
         for k in range(number_of_flips+1):
             board[i+k, j-k] = my_color
 
-    return board
+    return [board, board_original]

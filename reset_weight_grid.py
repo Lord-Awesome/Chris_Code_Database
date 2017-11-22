@@ -1,6 +1,6 @@
+from __init__ import *
 def reset_weight_grid():
-    import numpy as np
-    import os
+
     #path = "C:\\Users\\myran\\Desktop" #change for pi
     #os.chdir(path)
 

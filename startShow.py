@@ -1,5 +1,4 @@
 def startShow(show_dict):
-    #show_dict = {'name': 'Reversi'} #used for testing
     ## Accepts a dictionary that includes a show name and the approriate arguments. It then unpacks the arguments and calls the appropriate functions.
 
     try:
@@ -9,8 +8,15 @@ def startShow(show_dict):
         #return
         
 
-    showName = "Hue Show"
+    # showName = "Hue Show"
+    # showName = "Big_Text_Scroller"
+    # showName = "Snake"
+    # showName = "Tic_tac_toe"
+    # showName = "Clock"
+    # showName = "Reversi"
+    # showName = "Text_Scroller"
 
+# 
     from start_hue_show import start_hue_show
     from start_autonomous_snake import start_autonomous_snake
     from start_reversi import start_reversi
@@ -36,10 +42,10 @@ def startShow(show_dict):
         wait4 = 0
         # speed4 = 1.75
         speed4 = 3
-        divisor1 = 32
-        divisor2 = 20
-        divisor3 =8
-        divisor4 = 8
+        divisor1 = 30
+        divisor2 = 30
+        divisor3 = 25
+        divisor4 = 25
 
         ### Replace defaults with arguments from queue ###
         try: wait1 = show_dict['wait1']
@@ -79,15 +85,16 @@ def startShow(show_dict):
         #IMPORTANT: If you want to see it on the lights, change the display_on_lights_boolean to 1 or omit from function call
         
         ### Defaults ###
-        sleep_time = 0.5
-        wait_times = [0.05, 0.05, 0.05, 0.05, 0.05, 0.1, 0.15, 0.2, 0.2]
-        number_of_nom_noms = 2
-        number_of_bombs = 5
-        number_of_caffeine_pills = 5
+        sleep_time = 0.08
+        wait_times = [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+        number_of_nom_noms = 3
+        number_of_bombs = 6
+        number_of_caffeine_pills = 3
         level_0_nom_nom = 10
         level_1_nom_nom = 7
         level_2_nom_nom = 4
-        display_on_lights_boolean = False
+        display_on_lights_boolean = True
+        divisor = 4
 
         ### Replace defaults with arguments from queue ###
         try: sleep_time = show_dict['sleep_time']
@@ -108,10 +115,12 @@ def startShow(show_dict):
         except: print("Warning: could not get level_2_nom_nom")
         try: display_on_lights_boolean = show_dict['display_on_lights_boolean']
         except: print("Warning: could not get display_on_lights_boolean")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
 
         ### Call program ###
         
-        start_autonomous_snake(sleep_time, wait_times, number_of_nom_noms, number_of_bombs, number_of_caffeine_pills, level_0_nom_nom, level_1_nom_nom, level_2_nom_nom, display_on_lights_boolean)
+        start_autonomous_snake(sleep_time, wait_times, number_of_nom_noms, number_of_bombs, number_of_caffeine_pills, level_0_nom_nom, level_1_nom_nom, level_2_nom_nom, display_on_lights_boolean, divisor)
         
 
     if showName == "Reversi":
@@ -139,17 +148,19 @@ def startShow(show_dict):
 
 
         ### Defaults ###
-        train = 'yes'
-        train_iterations = 1000
-        number_of_games = 1
-        print_bool_no = 1
+        train = 'no'
+        train_iterations = 1
+        number_of_games = 3
+        print_bool_no = 0
         black_input_no = 'starter_input'
         white_input_no = 'starter_input'
+        black_input_no = 'computer_weight_capture'
+        white_input_no = 'computer_random'
         print_bool_yes = 0
         black_input_yes = 'computer_weight_capture'
         white_input_yes = 'computer_random'
         reset_weight_grid_boolean = 1
-        display_on_lights_boolean = 0
+        display_on_lights_boolean = 1
         sleep_time = 0.5
         R_value_black = 255
         G_value_black = 0
@@ -157,6 +168,7 @@ def startShow(show_dict):
         R_value_white = 0
         G_value_white = 255
         B_value_white = 0
+        divisor = 16
 
         ### Replace defaults with arguments from queue ###
         try: train = show_dict['train']
@@ -195,10 +207,12 @@ def startShow(show_dict):
         except: print("Warning: could not get G_value_white")
         try: B_value_white = show_dict['B_value_white']
         except: print("Warning: could not get B_value_white")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
 
         ### Call program ###
 
-        start_reversi(train, train_iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
+        start_reversi(train, train_iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white, divisor)
 
     if showName == "Tic_tac_toe":
         #def start_tic_tac_toe(display_on_lights_boolean, display_on_lights_train_boolean, summary_print_bool, input_number_of_trains, input_number_of_games, x_win_weighting, o_win_weighting, sleep_time, sleep_time_train)
@@ -210,14 +224,15 @@ def startShow(show_dict):
 
         ### Defaults ###
         display_on_lights_boolean = 1
-        display_on_lights_train_boolean = 0
-        summary_print_bool = True
-        input_number_of_trains = 10000
+        display_on_lights_train_boolean = 1
+        summary_print_bool = False
+        input_number_of_trains = 100
         input_number_of_games = 10
         x_win_weighting = 1
         o_win_weighting = 1
-        sleep_time = 0.5
+        sleep_time = 0.2
         sleep_time_train = 0
+        divisor = 16;
 
         ### Replace defaults with arguments from queue ###
         try: display_on_lights_boolean = show_dict['display_on_lights_boolean']
@@ -238,10 +253,14 @@ def startShow(show_dict):
         except: print("Warning: could not get sleep_time")
         try: sleep_time_train = show_dict['sleep_time_train']
         except: print("Warning: could not get sleep_time_train")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
+
+        # print("Divisor: ",divisor)
 
         ### Call program ###
         
-        start_tic_tac_toe(display_on_lights_boolean, display_on_lights_train_boolean, summary_print_bool, input_number_of_trains, input_number_of_games, x_win_weighting, o_win_weighting, sleep_time, sleep_time_train)
+        start_tic_tac_toe(display_on_lights_boolean, display_on_lights_train_boolean, summary_print_bool, input_number_of_trains, input_number_of_games, x_win_weighting, o_win_weighting, sleep_time, sleep_time_train, divisor)
 
 
     if showName == "Clock":
@@ -254,8 +273,9 @@ def startShow(show_dict):
         ### Defaults ###
         orientation = 'horizontal'
         display_on_lights_bool = 1
-        timer_value = 1
+        timer_value = 0
         timer_unit = "minutes"
+        divisor = 16
 
         ### Replace defaults with arguments from queue ###
         try: orientation = show_dict['orientation']
@@ -266,9 +286,11 @@ def startShow(show_dict):
         except: print("Warning: could not get timer_value")
         try: timer_unit = show_dict['timer_unit']
         except: print("Warning: could not get timer_unit")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
 
         ### Call program ###
-        start_clock(orientation, display_on_lights_bool, timer_value, timer_unit)
+        start_clock(orientation, display_on_lights_bool, timer_value, timer_unit, divisor)
         
     if showName == "Text_Scroller":
         #def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go Blue!", rainbow_bool = False, lights_bool = False, text_color_top = "Blue", text_color_bottom = "Yellow")
@@ -280,12 +302,13 @@ def startShow(show_dict):
 
         ### Defaults ###
         input_string_top = "Go Blue!"
-        input_string_bottom = "Go Blue!"
-        rainbow_bool = False
+        input_string_bottom = "Hail!"
+        rainbow_bool = True
         lights_bool = True
         text_color_top = "Blue"
         text_color_bottom = "Yellow"
         loop_count = -1
+        divisor = 64
 
         ### Replace defaults with arguments from queue ###
         try: input_string_top = show_dict['input_string_top']
@@ -302,6 +325,8 @@ def startShow(show_dict):
         except: print("Warning: could not get text_color_bottom")
         try: loop_count = show_dict['loop_count']
         except: print("Warning: could not get loop_count")
+        try: divisor = show_dict['divisor']
+        except: print("Warning: could not get divisor")
 
 
         ### Call program ###
@@ -320,10 +345,11 @@ def startShow(show_dict):
         # Also takes continuous_bool to determine if it should loop the message forever
         
         ### Defaults ###
-        input_string = "go blue!"
+        # input_string = "0123456789 :O"
+        input_string = "It's a trap!"
         rainbow_bool = False
         lights_bool = True
-        text_color = "Yellow"
+        text_color = "Red"
         loop_count = -1
         divisor = 8
 
@@ -340,6 +366,8 @@ def startShow(show_dict):
         except: print("Warning: could not get loop_count")
         try: divisor = show_dict['divisor']
         except: print("Warning: could not get divisor")
+
+        # print("Rainbow bool: ", rainbow_bool)
 
 
         ### Call program ###

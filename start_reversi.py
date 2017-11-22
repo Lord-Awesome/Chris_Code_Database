@@ -1,8 +1,8 @@
-def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white):
+from __init__ import *
+def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_no, print_bool_yes, black_input_yes, white_input_yes, reset_weight_grid_boolean, display_on_lights_boolean, number_of_games, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white, divisor):
     # Program starts here. You can choose between playing a single game, and training the computer against itself over n iterations
 
-    import numpy as np
-    import os
+
     #path = "C:\\Users\\myran\\Desktop" #change for pi
     #os.chdir(path)
 
@@ -14,6 +14,8 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
 
     #train = 'no' #Option to train the computer. If no, it plays a single game. If yes, it plays 'iterations' games. print_bool determines if it the program displays output. Recommend 0 for training
 
+    print("White RBG: ", R_value_white, B_value_white, G_value_white)
+    print("Black RBG: ", R_value_black, B_value_black, G_value_black)
 
     if train == 'no':
         board = board_setup()
@@ -24,8 +26,9 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
             print('Starting board state: ')
             print(board)
         for i in range(number_of_games):
-            board= board_setup()
-            winner = play_a_game(board, print_bool_no, black_input_no, white_input_no,display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
+            pixels.clear()
+            [board, board_original] = board_setup()
+            winner = play_a_game(board, print_bool_no, black_input_no, white_input_no,display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white, divisor, board_original)
         x = input('Press Enter to Exit')
 
     if train == 'yes':
@@ -44,8 +47,9 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
             print('                Game ', game+1)
             print('-'*100)
 
-            board= board_setup()
-            winner = play_a_game(board, print_bool_yes, black_input_yes, white_input_yes, display_on_lights_boolean, 0, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
+            [board, board_original] = board_setup()
+            pixels.clear()
+            winner = play_a_game(board, print_bool_yes, black_input_yes, white_input_yes, 0, 0, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white, divisor, board_original)
 
             winner_list.append(winner)
 
@@ -76,8 +80,9 @@ def start_reversi(train, iterations, print_bool_no, black_input_no, white_input_
         print('-'*100)
 
         for i in range(number_of_games):
-            board= board_setup()
-            winner = play_a_game(board, print_bool_no, black_input_yes, white_input_yes, display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white)
+            board = board_setup()
+            pixels.clear()
+            winner = play_a_game(board, print_bool_no, black_input_yes, white_input_yes, display_on_lights_boolean, sleep_time, R_value_black, G_value_black, B_value_black, R_value_white, G_value_white, B_value_white, divisor, board_original)
 
         
 

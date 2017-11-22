@@ -1,57 +1,41 @@
-def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go Blue!", rainbow_bool = False, lights_bool = False, text_color_top = "Blue", text_color_bottom = "Yellow"):
-    import numpy as np
-    import time
-    import os
+from __init__ import *
+def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go Blue!", rainbow_bool = False, lights_bool = False, text_color_top = "Blue", text_color_bottom = "Yellow", divisor = 16):
 
-##    rainbow_bool = False
-##    lights_bool = False
-##    text_color_top = "Blue"
-##    text_color_bottom = "Yellow"
-##    input_string_top = "Go Blue!"
-##    input_string_bottom = "Go Blue!"
+
     letter_color = []
-
-    try:
-
-        import Adafruit_WS2801
-        import Adafruit_GPIO.SPI as SPI
-        import RPi.GPIO as GPIO
-        PIXEL_COUNT = 160
-        PIXEL_CLOCK = 11
-        PIXEL_DOUT = 10
-        pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT,clk=PIXEL_CLOCK,do=PIXEL_DOUT)
-        pixels.clear()
-        pixels.show()
-
-    except:
-        print("Problem loading the Adafruit library stuff")
-
-    try: #TODO: add more colors
-        for text_color in [text_color_top, text_color_bottom]:
-            if text_color == "Blue":
-                letter_color = Adafruit_WS2801.RGB_to_color(0,255,0) #blue
-            elif text_color == "Red":
-                letter_color = Adafruit_WS2801.RGB_to_color(255,0,0) #red
-            elif text_color == "Yellow":
-                letter_color = Adafruit_WS2801.RGB_to_color(255,50,255) #yellow
-            elif text_color == "Green":
-                letter_color = Adafruit_WS2801.RGB_to_color(0,0,255) #green
-            elif text_color == "Purple":
-                letter_color = Adafruit_WS2801.RGB_to_color(255,50,255) #purple/pink
-            else:
-                letter_color = Adafruit_WS2801.RGB_to_color(0,0,255) #green
-            if text_color == text_color_top:
-                letter_color_top = letter_color
-            elif text_color == text_color_bottom:
-                letter_color_bottom = letter_color
-            else:
-                print("Error assigning non-rainbow letter color")
-
-    except:
-        print("Error assigning letter_colors")
+    leter_color_top = []
+    letter_color_bottom = []
 
 
+    # try: #TODO: add more colors
+    if text_color_top == "Blue":
+        letter_color_top = RGB_to_color(0,255,0,divisor) #blue
+    elif text_color_top == "Red":
+        letter_color_top = RGB_to_color(255,0,0,divisor) #red
+    elif text_color_top == "Yellow":
+        letter_color_top = RGB_to_color(255,50,255,divisor) #yellow
+    elif text_color_top == "Green":
+        letter_color_top = RGB_to_color(0,0,255,divisor) #green
+    elif text_color_top == "Purple":
+        letter_color_top = RGB_to_color(255,50,255,divisor) #purple/pink
+    else:
+        letter_color_top = RGB_to_color(0,0,255,divisor) #green
 
+    if text_color_bottom == "Blue":
+        letter_color_bottom = RGB_to_color(0,255,0,divisor) #blue
+    elif text_color_bottom == "Red":
+        letter_color_bottom = RGB_to_color(255,0,0,divisor) #red
+    elif text_color_bottom == "Yellow":
+        letter_color_bottom = RGB_to_color(255,50,255,divisor) #yellow
+    elif text_color_bottom == "Green":
+        letter_color_bottom = RGB_to_color(0,0,255,divisor) #green
+    elif text_color_bottom == "Purple":
+        letter_color_bottom = RGB_to_color(255,50,255,divisor) #purple/pink
+    else:
+        letter_color_bottom = RGB_to_color(0,0,255,divisor) #green        
+
+    # except:
+        # print("Error assigning letter_colors")
 
 
     #TODO: FOR EVERY POSSIBLE CHARACTER (68 characters as of 7/2), ASSIGN A LETTER_COLOR
@@ -77,300 +61,370 @@ def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go
         ########### Letters ###########
             if character_select == 'a' or character_select == 'A':
                 letter = [[0,1],[1,0],[1,2],[2,0],[2,1],[2,2],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(212,102,218)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(212,102,218)
             elif character_select == 'b' or character_select == 'B':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[3,0],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(242,195,198)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(242,195,198)
             elif character_select == 'c' or character_select == 'C':
                 letter = [[0,1],[0,2],[1,0],[2,0],[3,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(31,192,193)
+                #if rainbow_bool and lights_bool:
+                    ##letter_color = Adafruit_WS2801.RGB_to_color
+                     # letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)
+                     # letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(31,192,193)
             elif character_select == 'd' or character_select == 'D':
                 letter = [[0,0],[0,1],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2],[4,0],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(225,152,54)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(225,152,54)
             elif character_select == 'e' or character_select == 'E':
                 letter = [[0,0],[0,1],[0,2],[1,0],[2,0],[2,1],[2,2],[3,0],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(28,131,28)
+                #if rainbow_bool and lights_bool:
+                    # letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)
             elif character_select == 'f' or character_select == 'F':
                 letter = [[0,0],[0,1],[0,2],[1,0],[2,0],[2,1],[2,2],[3,0],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(32,87,31)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(32,87,31)
             elif character_select == 'g' or character_select == 'G':
                 letter = [[0,0],[0,1],[0,2],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2],[3,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(155,230,196)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(155,230,196)
             elif character_select == 'h' or character_select == 'H':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(110,249,244)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(110,249,244)
             elif character_select == 'i' or character_select == 'I':
                 letter = [[0,0],[0,1],[0,2],[1,1],[2,1],[3,1],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(14,195,89)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(14,195,89)
             elif character_select == 'j' or character_select == 'J':
                 letter = [[0,0],[0,1],[0,2],[1,2],[2,2],[3,0],[3,2],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(206,172,165)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(206,172,165)
             elif character_select == 'k' or character_select == 'K':
                 letter = [[0,0],[0,2],[1,0],[1,1],[2,0],[3,0],[3,1],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(50,169,141)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(50,169,141)
             elif character_select == 'l' or character_select == 'L':
                 letter = [[0,0],[1,0],[2,0],[3,0],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(139,197,39)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(139,197,39)
             elif character_select == 'm' or character_select == 'M':
                 letter = [[0,0],[0,2],[1,0],[1,1],[1,2],[2,0],[2,2],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(125,246,9)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(125,246,9)
             elif character_select == 'n' or character_select == 'N':
                 letter = [[1,0],[1,1],[1,2],[2,0],[2,2],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(46,218,89)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(46,218,89)
             elif character_select == 'o' or character_select == 'O':
                 letter = [[0,1],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(203,175,77)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(203,175,77)
             elif character_select == 'p' or character_select == 'P':
                 letter = [[0,0],[0,1],[1,0],[1,2],[2,0],[2,1],[3,0],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(113,128,219)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(113,128,219)
             elif character_select == 'q' or character_select == 'Q':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,1],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(221,70,208)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(221,70,208)
             elif character_select == 'r' or character_select =='R':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(237,27,5)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(237,27,5)
             elif character_select == 's' or character_select =='S':
                 letter = [[0,2],[0,1],[1,0],[2,1],[3,2],[4,1],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(190,181,41)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(190,181,41)
             elif character_select == 't' or character_select == 'T':
                 letter = [[0,0],[0,1],[0,2],[1,1],[2,1],[3,1],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(234,128,60)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(234,128,60)
             elif character_select == 'u' or character_select == 'U':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(197,98,102)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(197,98,102)
             elif character_select == 'v' or character_select == 'V':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(33,193,153)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(33,193,153)
             elif character_select == 'w' or character_select == 'W':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,1],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(178,128,113)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(178,128,113)
             elif character_select == 'x' or character_select == 'X':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,1],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(90,224,85)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(90,224,85)
             elif character_select == 'y' or character_select == 'Y':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,1],[3,1],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(247,90,58)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(247,90,58)
             elif character_select == 'z' or character_select == 'Z':
                 letter = [[0,0],[0,1],[0,2],[1,2],[2,1],[3,0],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(26,155,206)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(26,155,206)
 
         ########### Special Characters ###########
             elif character_select == ' ':
                 letter = [[4,0],[4,1],[4,2]] #write this in as a space holder, but never display it (not sure if the write-in is necessary)
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(80,13,22)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(80,13,22)
             elif character_select == '.':
                 letter = [[3,-1],[3,0],[4,-1],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(208,230,28)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(208,230,28)
             elif character_select == ',':
                 letter = [[3,0],[4,-1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(189,49,17)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(189,49,17)
             elif character_select == '/':
                 letter = [[0,2],[1,2],[2,1],[3,0],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(30,174,96)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(30,174,96)
             elif character_select == '\\':
                 letter = [[0,0],[1,0],[2,1],[3,2],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(99,4,21)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(99,4,21)
             elif character_select == '?':
                 letter = [[0,0],[0,1],[0,2],[1,2],[2,2],[2,1],[3,1],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(62,76,113)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(62,76,113)
             elif character_select == '!':
                 letter = [[0,0],[1,0],[2,0],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(47,50,86)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(47,50,86)
             elif character_select == ';':
                 letter = [[0,1],[3,1],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(165,1,146)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(165,1,146)
             elif character_select == '\'':
                 letter = [[0,2],[1,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(116,146,191)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(116,146,191)
             elif character_select == '\"':
                 letter = [[0,0],[0,2],[1,0],[1,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(70,50,242)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(70,50,242)
             elif character_select == '[':
                 letter = [[0,0],[0,1],[1,0],[2,0],[3,0],[4,0],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(223,130,65)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(223,130,65)
             elif character_select == ']':
                 letter = [[0,1],[0,2],[1,2],[2,2],[3,2],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(40,21,248)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(40,21,248)
             elif character_select == '{':
                 letter = [[0,0],[0,1],[1,0],[2,1],[3,0],[4,0],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(251,68,28)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(251,68,28)
             elif character_select == '}':
                 letter = [[0,1],[0,2],[1,2],[2,1],[3,2],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(243,126,164)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(243,126,164)
             elif character_select == '|':
                 letter = [[0,1],[1,1],[2,1],[3,1],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(248,1,44)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(248,1,44)
             elif character_select == '-':
                 letter = [[2,0],[2,1],[2,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(177,244,204)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(177,244,204)
             elif character_select == '_':
                 letter = [[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(130,186,198)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(130,186,198)
             elif character_select == '=':
                 letter = [[1,0],[1,1],[1,2],[3,0],[3,1],[3,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(116,30,87)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(116,30,87)
             elif character_select == '+':
                 letter = [[0,1],[1,1],[2,0],[2,1],[2,2],[3,1],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(95,183,155)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(95,183,155)
             elif character_select == '<':
                 letter = [[0,2],[1,1],[2,0],[3,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(16,239,202)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(16,239,202)
             elif character_select == '>':
                 letter = [[0,0],[1,1],[2,2],[3,1],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(2,89,221)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(2,89,221)
             elif character_select == ':':
                 letter = [[1,1],[3,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(74,25,127)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(74,25,127)
             elif character_select == '#':
                 letter = [[0,1],[0,3],[1,0],[1,1],[1,2],[1,3],[1,4],[2,1],[2,3],[3,0],[3,1],[3,2],[3,3],[3,4],[4,1],[4,3]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(124,241,210)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(124,241,210)
             elif character_select == '$':
                 letter = [[0,1],[1,1],[1,2],[2,0],[2,1],[3,1],[3,2],[4,0],[4,1]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(11,47,146)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(11,47,146)
             elif character_select == '%':
                 letter = [[0,0],[0,2],[1,2],[2,1],[3,0],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(252,80,101)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(252,80,101)
             elif character_select == '^':
                 letter = [[0,1],[1,0],[1,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(186,172,197)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(186,172,197)
             elif character_select == '&':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,1],[3,0],[3,2],[4,0],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(235,111,152)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(235,111,152)
             elif character_select == '*':
                 letter = [[1,0],[1,2],[2,1],[3,0],[3,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(212,234,48)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(212,234,48)
             elif character_select == '(':
                 letter = [[0,2],[1,1],[2,1],[3,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(114,105,188)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(114,105,188)
             elif character_select == ')':
                 letter = [[0,0],[1,1],[2,1],[3,1],[4,0]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(90,186,236)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(90,186,236)
             elif character_select == '~':
                 letter = [[2,0],[1,1],[2,2],[1,3]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(1,152,52)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(1,152,52)
             elif character_select == '`':
                 letter = [[0,1],[1,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(112,184,51)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(112,184,51)
 
         ######## Numbers #####
             elif character_select == '1':
                 letter = [[0,1],[1,0],[1,1],[2,1],[3,1],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(147,163,42)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(147,163,42)
             elif character_select == '2':
                 letter = [[0,0],[0,1],[0,2],[1,2],[2,0],[2,1],[2,2],[3,0],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(225,199,151)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(225,199,151)
             elif character_select == '3':
                 letter = [[0,0],[0,1],[0,2],[1,2],[2,0],[2,1],[2,2],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(231,77,91)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(231,77,91)
             elif character_select == '4':
                 letter = [[0,0],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2],[3,2],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(87,154,169)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(87,154,169)
             elif character_select == '5':
                 letter = [[0,0],[0,1],[0,2],[1,0],[2,0],[2,1],[2,2],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(18,166,55)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(18,166,55)
             elif character_select == '6':
                 letter = [[0,0],[0,1],[0,2],[1,0],[2,0],[2,1],[2,2],[3,0],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(24,102,205)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(24,102,205)
             elif character_select == '7':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,2],[3,2],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(201,3,83)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(201,3,83)
             elif character_select == '8':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2],[3,0],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(172,0,126)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(172,0,126)
             elif character_select == '9':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2],[3,2],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(232,198,151)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(232,198,151)
             elif character_select == '0':
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,2],[3,0],[3,2],[4,0],[4,1],[4,2]]
-                if  rainbow_bool and lights_bool:
-                    letter_color = Adafruit_WS2801.RGB_to_color(97,84,100)
+                ##if rainbow_bool and lights_bool:
+                    #letter_color = Adafruit_WS2801.RGB_to_color
+                     #letter_color = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)(97,84,100)
 
             else:
                 letter = [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2],[3,0],[3,1],[3,2],[4,0],[4,1],[4,2]]
 
+            if rainbow_bool and lights_bool:
+                letter_color_top = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)
+                letter_color_bottom = RGB_to_color(random.randint(0,255),random.randint(0,255),random.randint(0,255),divisor)
+
             if level =='top':
                 character_list_top.append(letter)
                 if lights_bool:
-                    if letter_color != []:
-                        display_color_list_top.append(letter_color)
-                    else:
-                        display_color_list_top.append(letter_color_top)
+                    display_color_list_top.append(letter_color_top)
             elif level == 'bottom':
                 character_list_bottom.append(letter)
                 if lights_bool:
-                    if letter_color != []:
-                        display_color_list_bottom.append(letter_color)
-                    else:
-                        display_color_list_bottom.append(letter_color_bottom)
+                    display_color_list_bottom.append(letter_color_bottom)
             else:
                 print("Error creating character lists")
+
+            # print(letter_color)
+            # print(display_color_list_top)
+            # print(display_color_list_bottom)
 
     for level in ['top', 'bottom']:
         if level == 'top':
@@ -432,7 +486,7 @@ def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go
                             #print("Updating grid top")
                             grid[position[0]][position[1]+letter_count_list_top[letter_number]] = 1 #display
                             if lights_bool:
-                                pixels.set_pixel((10*(15-position[1]) + position[0]), display_color) #TODO: CHECK THIS! ASSUMES ROTATE THE 16X10 CLOCKWISE 90 DEGREES TO GET A 10X16
+                                pixels.set_pixel((16*position[0]) + (position[1]+letter_count_list_top[letter_number]), display_color) #TODO: CHECK THIS! ASSUMES ROTATE THE 16X10 CLOCKWISE 90 DEGREES TO GET A 10X16
                         elif position[1] + letter_count_list_top[letter_number] >= 16: #don't want to break if it goes off left end of screen; only right
                             break_bool = True
                 elif level == 'bottom':
@@ -441,21 +495,20 @@ def start_text_scroller(input_string_top = "Go Blue!", input_string_bottom = "Go
                             #print("Updating grid bottom")
                             grid[position[0]+5][position[1]+letter_count_list_bottom[letter_number]] = 2 #display
                             if lights_bool:
-                                pixels.set_pixel((10*(15-position[1]) + position[0]), display_color) #TODO: CHECK THIS! ASSUMES ROTATE THE 16X10 CLOCKWISE 90 DEGREES TO GET A 10X16
+                                pixels.set_pixel((16*(position[0]+5)) + (position[1]+letter_count_list_bottom[letter_number]), display_color) #TODO: CHECK THIS! ASSUMES ROTATE THE 16X10 CLOCKWISE 90 DEGREES TO GET A 10X16
                         elif position[1] + letter_count_list_bottom[letter_number] >= 16: 
                                 break_bool = True
                 else:
                     print("Error assigning letter positions to grid and lights")
 
-        print(grid,'\n')
+        # print(grid,'\n')
         if lights_bool:
             pixels.show()
         for i in range(len(letter_count_list_top)):
             letter_count_list_top[i] = letter_count_list_top[i] - 1
         for i in range(len(letter_count_list_bottom)):
             letter_count_list_bottom[i] = letter_count_list_bottom[i] - 1
-        time.sleep(0.3)
-        os.system('cls')
+        # time.sleep(0.3)
         if lights_bool:
             pixels.clear()
 

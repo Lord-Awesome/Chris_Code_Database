@@ -24,7 +24,7 @@ def serialized_hue_shift(wait, speed,divisor):
         color_list.append(color)
 
     #Light the LEDs
-    for i in range(len(color_list)):
+    for i in range(len(color_list)+1):
         for j in range(pixels.count()): 
             k = (i+j)%len(color_list) #if we exceed the list, wrap around
             pixels.set_pixel(j, color_list[k])

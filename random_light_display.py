@@ -31,6 +31,18 @@ def random_light_display(wait, speed, divisor):
         for j in pixels_list:
             k = random.randint(0, len(color_list) - 1)
             pixels.set_pixel(j, color_list[k])
+        
+        if (i%2 == 0):
+            rand_blue = random.random()
+            rand_yellow = random.random()
+            if (rand_blue < 0.5):
+                GPIO.output(12,GPIO.LOW)
+            if (rand_yellow < 0.5):
+                GPIO.output(16,GPIO.LOW)
+
         pixels.show()
         if wait > 0:
             time.sleep(wait)
+
+        GPIO.output(12,GPIO.HIGH)
+        GPIO.output(16,GPIO.HIGH)

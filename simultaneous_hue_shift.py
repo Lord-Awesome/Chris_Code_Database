@@ -1,6 +1,7 @@
 from __init__ import *
 def simultaneous_hue_shift(wait, speed, divisor):
     import math
+    pixels.clear()
     for i in range(int(math.floor(256/speed))):
         # color = Adafruit_WS2801.RGB_to_color(0, int(math.floor(255/divisor)), int(math.floor(math.floor(i*speed)/divisor)))
         color = RGB_to_color(0,255,i*speed,divisor)

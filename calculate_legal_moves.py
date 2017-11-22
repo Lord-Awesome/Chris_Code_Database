@@ -1,7 +1,7 @@
+from __init__ import *
 def calculate_legal_moves(board, my_color, opposite_color, strategy, print_bool):
-    import math
     from strategy_executor import strategy_executor as strat
-    import numpy as np
+
     weight_grid = np.load('weight_grid.npy')
     
     legal_moves_right = []

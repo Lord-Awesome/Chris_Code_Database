@@ -27,7 +27,7 @@ def non_serialized_hue_shift(wait, speed, divisor):
 
 
 
-    for i in range(len(color_list)):
+    for i in range(len(color_list)+1):
         index = 0
         for j in pixels_list:
             k = (i+j)%len(color_list) #if we exceed the list, wrap around

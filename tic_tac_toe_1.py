@@ -1,120 +1,212 @@
-def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_bool, print_every_move_bool, display_on_lights_boolean, sleep_time):
+from __init__ import *
+#main() is the last two lines of this file
+def tic_tac_toe_1(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_train_boolean, sleep_time_train, divisor):
 
-    import random
-    import time
-    import itertools
-    import pickle
-    import math
-    from tic_tac_toe_1 import play_games
-    if display_on_lights_boolean == 1:
-        import Adafruit_WS2801
-        import Adafruit_GPIO.SPI as SPI
-        import RPi.GPIO as GPIO
-    try:
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(12, GPIO.OUT)
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.output(16, GPIO.HIGH)
-        GPIO.output(12, GPIO.LOW)
-    except Exception as ex:
-        print(ex)
-        print("Error Encountered")
+    def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_bool, print_every_move_bool, display_on_lights_boolean, sleep_time, divisor):
 
+        # try:
 
-    if display_on_lights_boolean == 1:
         PIXEL_COUNT = 160
         PIXEL_CLOCK = 11
-        PIXEL_DOUT = 10
-        pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT,clk=PIXEL_CLOCK,do=PIXEL_DOUT)
-        pixels.clear()
-        pixels.show()
+        PIXEL_DOUT  = 10
+        pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, clk=PIXEL_CLOCK, do=PIXEL_DOUT)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(12, GPIO.OUT)    
+        GPIO.setup(16, GPIO.OUT)
+        GPIO.output(12, GPIO.LOW)
+        GPIO.output(12, GPIO.HIGH)
+        # except Exception as ex:
+        #     print(ex)
+        #     print("Error Encountered")
 
-    global top_left
-    global top_mid
-    global top_right
-    global mid_left
-    global mid_mid
-    global mid_right
-    global bottom_left
-    global bottom_mid
-    global bottom_right
-    
-    top_left = '-'
-    top_mid = '-'
-    top_right = '-'
-    mid_left = '-'
-    mid_mid = '-'
-    mid_right = '-'
-    bottom_left = '-'
-    bottom_mid = '-'
-    bottom_right = '-'
-
-    global x_play_with_weights
-    global o_play_with_weights
-    x_play_with_weights = x_play_with_weights_bool
-    o_play_with_weights = o_play_with_weights_bool
-    load_weight_vectors = x_play_with_weights or o_play_with_weights
-    game_count = 0
-    winner_list = []
-
-
-    if load_weight_vectors == True:
-        f = open('store.pck1', 'rb')
-        g = open('store.pck2', 'rb')
-        weight_vectors = pickle.load(f)
-        weight_vectors_2 = pickle.load(g)
-        f.close()
-        g.close()
+        # pixels.show()
+        global top_left
+        global top_mid
+        global top_right
+        global mid_left
+        global mid_mid
+        global mid_right
+        global bottom_left
+        global bottom_mid
+        global bottom_right
+        global move_memory
+        global move
+        global line_color
+        global X_color
+        global O_color
+        global draw_flash_color
+        global x_moves
+        global o_moves
+        global game_count
+        global weight_vectors
+        global weight_vectors_2
         
-    else:
-        weight_vector_1 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_3 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_5 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_7 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_9 = [0,0,0,0,0,0,0,0,0]
-        weight_vectors = [weight_vector_1, weight_vector_3, weight_vector_5, weight_vector_7, weight_vector_9]
+        top_left = '-'
+        top_mid = '-'
+        top_right = '-'
+        mid_left = '-'
+        mid_mid = '-'
+        mid_right = '-'
+        bottom_left = '-'
+        bottom_mid = '-'
+        bottom_right = '-'
 
-        weight_vector_2 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_4 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_6 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_8 = [0,0,0,0,0,0,0,0,0]
-        weight_vector_10 = [0,0,0,0,0,0,0,0,0]
-        weight_vectors_2 = [weight_vector_2, weight_vector_4, weight_vector_6, weight_vector_8, weight_vector_10]
+        x_play_with_weights = x_play_with_weights_bool
+        o_play_with_weights = o_play_with_weights_bool
+        load_weight_vectors = x_play_with_weights_bool or o_play_with_weights_bool
+        game_count = 0
+        winner_list = []
 
 
-    if display_on_lights_boolean == 1:
-        line_color = Adafruit_WS2801.RGB_to_color(255,255,50) #yellow
-        X_color = Adafruit_WS2801.RGB_to_color(50,50,255) #blue
-        O_color = Adafruit_WS2801.RGB_to_color(255,50,50) #red
-        win_flash_color = Adafruit_WS2801.RGB_to_color(50,255,50) #green
-        draw_flash_color = Adafruit_WS2801.RGB_to_color(255,50,255) #purple/pink
+        if load_weight_vectors == True:
+            f = open('store.pck1', 'rb')
+            g = open('store.pck2', 'rb')
+            weight_vectors = pickle.load(f)
+            weight_vectors_2 = pickle.load(g)
+            f.close()
+            g.close()
+            
+        else:
+            weight_vector_1 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_3 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_5 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_7 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_9 = [0,0,0,0,0,0,0,0,0]
+            weight_vectors = [weight_vector_1, weight_vector_3, weight_vector_5, weight_vector_7, weight_vector_9]
 
-    class Game_Over_Winner(Exception): pass
-    class Game_Over_Draw(Exception): pass
-    class Execute_Error(Exception): pass
+            weight_vector_2 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_4 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_6 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_8 = [0,0,0,0,0,0,0,0,0]
+            weight_vector_10 = [0,0,0,0,0,0,0,0,0]
+            weight_vectors_2 = [weight_vector_2, weight_vector_4, weight_vector_6, weight_vector_8, weight_vector_10]
 
-    def update_weight_vectors(x_moves, winner):
-        for i in range(len(x_moves)):
-            if winner == 'X':
-                weight_vectors[i][x_moves[i]-1] = weight_vectors[i][x_moves[i]-1] + x_win_weighting
-            if winner == 'O':
-                weight_vectors[i][x_moves[i]-1] = weight_vectors[i][x_moves[i]-1] - x_win_weighting
-
-        for i in range(len(o_moves)):
-            if winner == 'X':
-                weight_vectors_2[i][o_moves[i]-1] = weight_vectors_2[i][o_moves[i]-1] - o_win_weighting
-            if winner == 'O':
-                weight_vectors_2[i][o_moves[i]-1] = weight_vectors_2[i][o_moves[i]-1] + o_win_weighting
+        global X_win_flash_color
+        global O_win_flash_color
+        global draw_flash_color
+        if display_on_lights_boolean == 1:
+            line_color = RGB_to_color(255,0,0,(divisor*3)) #red
+            X_color = RGB_to_color(255,50,244,divisor) #yellow
+            O_color = RGB_to_color(80,255,100,divisor) #blue
+            X_win_flash_color = RGB_to_color(0,0,255,divisor) #green
+            O_win_flash_color = RGB_to_color(0,0,255,divisor) #green
+            draw_flash_color = RGB_to_color(255,50,255, divisor) #purple/pink
         
 
+
+        # Outer while loop iterates through number of games. It runs the game then prints the end-state board and increments the game count.
+        # Inner while loop plays the game. It checks for a win then chooses the appropriate character, chooses a random move, and executes the move by setting the character into a variable. It then increments the move count.
+        while game_count < number_of_games:
+            # print("Number of games: ", number_of_games)
+            # print("Game coiunt: ", game_count)
+
+            if display_on_lights_boolean == 1:
+                pixels.clear()
+                pixels.show()
+            move_memory = []
+            x_moves = []
+            o_moves = []
+            move = 1
+
+            top_left = '-'
+            top_mid = '-'
+            top_right = '-'
+            mid_left = '-'
+            mid_mid = '-'
+            mid_right = '-'
+            bottom_left = '-'
+            bottom_mid = '-'
+            bottom_right = '-'
+
+            if print_bool == True:
+                print_scaffolding(game_count, summary_print_bool)
+            
+            while 1:
+
+                try: 
+                    #Check for end of game. If game over, subfunction will raise Game_Over exception, causing except below which will break
+                    check_for_win(x_moves, "X", print_bool, display_on_lights_train_boolean, X_win_flash_color, O_win_flash_color, 'X')
+                    check_for_win(o_moves, "O", print_bool, display_on_lights_train_boolean, X_win_flash_color, O_win_flash_color, 'O')
+                    check_for_draw(print_bool, draw_flash_color, display_on_lights_boolean)
+                    
+                    # Choose a character to display, choose a move to make, then execute it by updating some lists
+                    choose_char()
+                    choose_move(move, move_memory, x_moves, o_moves, x_play_with_weights, o_play_with_weights, number_of_games)
+                    execute_move(move_position) #Choose the move and add it to the move lists
+
+                    # Display things on the lights and in the terminal
+                    if display_on_lights_boolean == 1:
+                        # print("Pixels: ", pixels)
+                        display_on_lights(x_moves, 'X')
+                        display_on_lights(o_moves, 'O')
+                    
+                    
+                    if print_every_move_bool == True:
+                        print_move_result(move, move_position, print_bool)
+                        print_board()
+                    
+                    time.sleep(sleep_time)
+                
+                except Game_Over_Winner:
+                    time.sleep(sleep_time*2)
+                    game_count = game_count + 1
+                    winner_list.append(move_char)
+                    update_weight_vectors(x_moves, move_char, x_win_weighting, o_win_weighting)
+                    break
+                
+                except Game_Over_Draw:
+                    time.sleep(sleep_time*2)
+                    game_count = game_count + 1
+                    winner_list.append("D")
+                    break
+                
+                except Execute_Error:
+                    break
+
+                move = move+1
+
+            if print_bool == True:
+                # print_board()
+                continue
+          
+            game_count = game_count + 1
+
+        print_summary(winner_list, game_count, summary_print_bool)
+        x_weight_vector_store = open('store.pck1', 'wb')
+        o_weight_vector_store = open('store.pck2','wb')
+        pickle.dump(weight_vectors, x_weight_vector_store)
+        pickle.dump(weight_vectors_2, o_weight_vector_store)
+        x_weight_vector_store.close()
+        o_weight_vector_store.close()
+        
+
+        if display_on_lights_boolean == 1:
+            try:
+                GPIO.cleanup()
+            except:
+                print("GPIO error")
+        return [X_wins, O_wins, draw_wins]
+    def update_weight_vectors(x_moves, winner, x_win_weighting, o_win_weighting):
+            for i in range(len(x_moves)):
+                if winner == 'X':
+                    weight_vectors[i][x_moves[i]-1] = weight_vectors[i][x_moves[i]-1] + x_win_weighting
+                if winner == 'O':
+                    weight_vectors[i][x_moves[i]-1] = weight_vectors[i][x_moves[i]-1] - x_win_weighting
+
+            for i in range(len(o_moves)):
+                if winner == 'X':
+                    weight_vectors_2[i][o_moves[i]-1] = weight_vectors_2[i][o_moves[i]-1] - o_win_weighting
+                if winner == 'O':
+                    weight_vectors_2[i][o_moves[i]-1] = weight_vectors_2[i][o_moves[i]-1] + o_win_weighting
+            
     def display_on_lights(moves_list, player):
         for i in range(8):
-            pixels.set_pixel(2+(16*i), line_color) #Sets each light in third row to line color
-            pixels.set_pixel(5+(16*i), line_color) #Same for 6th row
+            pixels.set_pixel(2+(16*i)+2, line_color) #Sets each light in third row to line color
+            pixels.set_pixel(5+(16*i)+2, line_color) #Same for 6th row
         for i in range(32,40):
-            pixels.set_pixel(i, line_color) #Sets each light in 3rd column to line color
+            pixels.set_pixel(i+2, line_color) #Sets each light in 3rd column to line color
         for i in range(80, 88):
-            pixels.set_pixel(i, line_color) #Same for 6th column
+            pixels.set_pixel(i+2, line_color) #Same for 6th column
 
         if player == 'X':
             display_color = X_color
@@ -123,120 +215,121 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
             
         for location in moves_list:
             if location == 1:
-                pixels.set_pixel(0, display_color)
-                pixels.set_pixel(1, display_color)
-                pixels.set_pixel(16, display_color)
-                pixels.set_pixel(17, display_color)
+                pixels.set_pixel(0+2, display_color)
+                pixels.set_pixel(1+2, display_color)
+                pixels.set_pixel(16+2, display_color)
+                pixels.set_pixel(17+2, display_color)
             if location == 2:
-                pixels.set_pixel(48, display_color)
-                pixels.set_pixel(49, display_color)
-                pixels.set_pixel(64, display_color)
-                pixels.set_pixel(65, display_color)
+                pixels.set_pixel(48+2, display_color)
+                pixels.set_pixel(49+2, display_color)
+                pixels.set_pixel(64+2, display_color)
+                pixels.set_pixel(65+2, display_color)
             if location == 3:
-                pixels.set_pixel(96, display_color)
-                pixels.set_pixel(97, display_color)
-                pixels.set_pixel(112, display_color)
-                pixels.set_pixel(113, display_color)
+                pixels.set_pixel(96+2, display_color)
+                pixels.set_pixel(97+2, display_color)
+                pixels.set_pixel(112+2, display_color)
+                pixels.set_pixel(113+2, display_color)
             if location == 4:
-                pixels.set_pixel(3, display_color)
-                pixels.set_pixel(4, display_color)
-                pixels.set_pixel(19, display_color)
-                pixels.set_pixel(20, display_color)
+                pixels.set_pixel(3+2, display_color)
+                pixels.set_pixel(4+2, display_color)
+                pixels.set_pixel(19+2, display_color)
+                pixels.set_pixel(20+2, display_color)
             if location == 5:
-                pixels.set_pixel(51, display_color)
-                pixels.set_pixel(52, display_color)
-                pixels.set_pixel(67, display_color)
-                pixels.set_pixel(68, display_color)
+                pixels.set_pixel(51+2, display_color)
+                pixels.set_pixel(52+2, display_color)
+                pixels.set_pixel(67+2, display_color)
+                pixels.set_pixel(68+2, display_color)
             if location == 6:
-                pixels.set_pixel(99, display_color)
-                pixels.set_pixel(100, display_color)
-                pixels.set_pixel(115, display_color)
-                pixels.set_pixel(116, display_color)
+                pixels.set_pixel(99+2, display_color)
+                pixels.set_pixel(100+2, display_color)
+                pixels.set_pixel(115+2, display_color)
+                pixels.set_pixel(116+2, display_color)
             if location == 7:
-                pixels.set_pixel(6, display_color)
-                pixels.set_pixel(7, display_color)
-                pixels.set_pixel(22, display_color)
-                pixels.set_pixel(23, display_color)
+                pixels.set_pixel(6+2, display_color)
+                pixels.set_pixel(7+2, display_color)
+                pixels.set_pixel(22+2, display_color)
+                pixels.set_pixel(23+2, display_color)
             if location == 8:
-                pixels.set_pixel(54, display_color)
-                pixels.set_pixel(55, display_color)
-                pixels.set_pixel(70, display_color)
-                pixels.set_pixel(71, display_color)
+                pixels.set_pixel(54+2, display_color)
+                pixels.set_pixel(55+2, display_color)
+                pixels.set_pixel(70+2, display_color)
+                pixels.set_pixel(71+2, display_color)
             if location == 9:
-                pixels.set_pixel(102, display_color)
-                pixels.set_pixel(103, display_color)
-                pixels.set_pixel(118, display_color)
-                pixels.set_pixel(119, display_color)
+                pixels.set_pixel(102+2, display_color)
+                pixels.set_pixel(103+2, display_color)
+                pixels.set_pixel(118+2, display_color)
+                pixels.set_pixel(119+2, display_color)
         pixels.show()
-        time.sleep(0.5)
 
-    def win_flash(flash_list, end_game_state): #Same as function above but it flashes the winning squares
+    def win_flash(flash_list, end_game_state, display_on_lights_boolean, win_flash_color): #Same as function above but it flashes the winning squares
 
         if display_on_lights_boolean == 0:
             return
-        if end_game_state == "win":
-            display_color = win_flash_color
-        if end_game_state == "draw":
-            display_color = draw_flash_color
+        display_color = win_flash_color
         
         for location in flash_list:
             if location == 1:
-                pixels.set_pixel(0, display_color)
-                pixels.set_pixel(1, display_color)
-                pixels.set_pixel(16, display_color)
-                pixels.set_pixel(17, display_color)
-            if location == 2:
-                pixels.set_pixel(48, display_color)
-                pixels.set_pixel(49, display_color)
-                pixels.set_pixel(64, display_color)
-                pixels.set_pixel(65, display_color)
-            if location == 3:
-                pixels.set_pixel(96, display_color)
-                pixels.set_pixel(97, display_color)
-                pixels.set_pixel(112, display_color)
-                pixels.set_pixel(113, display_color)
-            if location == 4:
+                pixels.set_pixel(2, display_color)
                 pixels.set_pixel(3, display_color)
-                pixels.set_pixel(4, display_color)
+                pixels.set_pixel(18, display_color)
                 pixels.set_pixel(19, display_color)
-                pixels.set_pixel(20, display_color)
-            if location == 5:
+            if location == 2:
+                pixels.set_pixel(50, display_color)
                 pixels.set_pixel(51, display_color)
-                pixels.set_pixel(52, display_color)
+                pixels.set_pixel(66, display_color)
                 pixels.set_pixel(67, display_color)
-                pixels.set_pixel(68, display_color)
-            if location == 6:
+            if location == 3:
+                pixels.set_pixel(98, display_color)
                 pixels.set_pixel(99, display_color)
-                pixels.set_pixel(100, display_color)
+                pixels.set_pixel(114, display_color)
                 pixels.set_pixel(115, display_color)
-                pixels.set_pixel(116, display_color)
-            if location == 7:
+            if location == 4:
+                pixels.set_pixel(5, display_color)
                 pixels.set_pixel(6, display_color)
-                pixels.set_pixel(7, display_color)
+                pixels.set_pixel(21, display_color)
                 pixels.set_pixel(22, display_color)
-                pixels.set_pixel(23, display_color)
-            if location == 8:
+            if location == 5:
+                pixels.set_pixel(53, display_color)
                 pixels.set_pixel(54, display_color)
-                pixels.set_pixel(55, display_color)
+                pixels.set_pixel(69, display_color)
                 pixels.set_pixel(70, display_color)
-                pixels.set_pixel(71, display_color)
-            if location == 9:
+            if location == 6:
+                pixels.set_pixel(101, display_color)
                 pixels.set_pixel(102, display_color)
-                pixels.set_pixel(103, display_color)
+                pixels.set_pixel(117, display_color)
                 pixels.set_pixel(118, display_color)
-                pixels.set_pixel(119, display_color)
+            if location == 7:
+                pixels.set_pixel(8, display_color)
+                pixels.set_pixel(9, display_color)
+                pixels.set_pixel(24, display_color)
+                pixels.set_pixel(25, display_color)
+            if location == 8:
+                pixels.set_pixel(56, display_color)
+                pixels.set_pixel(57, display_color)
+                pixels.set_pixel(72, display_color)
+                pixels.set_pixel(73, display_color)
+            if location == 9:
+                pixels.set_pixel(104, display_color)
+                pixels.set_pixel(105, display_color)
+                pixels.set_pixel(120, display_color)
+                pixels.set_pixel(121, display_color)
+        if display_color == X_win_flash_color:
+            GPIO.output(16, GPIO.LOW)
+        elif display_color == O_win_flash_color:
+            GPIO.output(12, GPIO.LOW)
+        else:
+            GPIO.output(12, GPIO.LOW)
+            GPIO.output(16, GPIO.LOW)
+
+        pixels.show()  
+        time.sleep(1)   
+        pixels.clear()
+        pixels.show() 
+
         GPIO.output(12, GPIO.HIGH)
         GPIO.output(16, GPIO.HIGH)
-
-        pixels.show()
-        time.sleep(1)        
-
-        GPIO.output(12, GPIO.LOW)
-        GPIO.output(16, GPIO.LOW)
         
-
-        
-    def analyze_results(winner_list):
+    def analyze_results(winner_list, summary_print_bool):
         global X_wins
         global O_wins
         global draw_wins
@@ -288,59 +381,83 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
         print('         ------------')
         print('\n')
 
-    def check_for_draw():
+    def check_for_draw(print_bool, draw_flash_color, display_on_lights_boolean):
         if len(move_memory) == 9:
             if print_bool == True:
                 print("Game Over. Result: Draw")
-            win_flash([1,2,3,4,5,6,7,8,9], "draw")
+            win_flash([0], "draw", display_on_lights_boolean, draw_flash_color)
+            time.sleep(0.5)
             raise Game_Over_Draw
             
-
-    def check_for_win(move_history, player):
+    def check_for_win(move_history, player, print_bool, display_on_lights_boolean, X_win_flash_color, O_win_flash_color, winner):
         
         if len(move_history) >= 3:
             for subset in itertools.combinations(move_history, 3):
                 if 1 in subset and 5 in subset and 9 in subset:
                     if print_bool == True:
                         print("Game Over. Diagonal Win. Result: ", player, " wins")
-                    win_flash([1, 5, 9], "win")
+                    if winner == 'X':
+                        win_flash([1, 5, 9], "win", display_on_lights_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([1, 5, 9], "win", display_on_lights_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 3 in subset and 5 in subset and 7 in subset:
                     if print_bool == True:
                         print("Game Over. Diagonal Win. Result: ", player, " wins")
-                    win_flash([3, 5, 7], "win")
+                    if winner == 'X':
+                        win_flash([3, 5, 7], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([3, 5, 7], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 1 in subset and 4 in subset and 7 in subset:
                     if print_bool == True:
                         print("Game Over. Left Column Win. Result: ", player, " wins")
-                    win_flash([1, 4, 7], "win")
+                    if winner == 'X':
+                        win_flash([1, 4, 7], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([1, 4, 7], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 2 in subset and 5 in subset and 8 in subset:
                     if print_bool == True:
                         print("Game Over. Mid Column Win. Result: ", player, " wins")
-                    win_flash([2, 5, 8], "win")
+                    if winner == 'X':
+                        win_flash([2, 5, 8], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([2, 5, 8], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 3 in subset and 6 in subset and 9 in subset:
                     if print_bool == True:
                         print("Game Over. Right Column Win. Result: ", player, " wins")
-                    win_flash([3, 6, 9], "win")
+                    if winner == 'X':
+                        win_flash([3, 6, 9], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([3, 6, 9], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 1 in subset and 2 in subset and 3 in subset:
                     if print_bool == True:
                         print("Game Over. Top Row Win. Result: ", player, " wins")
-                    win_flash([1, 2, 3], "win")
+                    if winner == 'X':
+                        win_flash([1, 2, 3], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([1, 2, 3], "win", display_on_lights_train_boolean, O_win_flash_color)
+                    pixels.show()
                     raise Game_Over_Winner
                 if 4 in subset and 5 in subset and 6 in subset:
                     if print_bool == True:
                         print("Game Over. Mid Row Win. Result: ", player, " wins")
-                    win_flash([4, 5, 6], "win")
+                    if winner == 'X':
+                        win_flash([4, 5, 6], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([4, 5, 6], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
                 if 7 in subset and 8 in subset and 9 in subset:
                     if print_bool == True:
                         print("Game Over. Bottom Row Win. Result: ", player, " wins")
-                    win_flash([7, 8, 9], "win")
+                    if winner == 'X':
+                        win_flash([7, 8, 9], "win", display_on_lights_train_boolean, X_win_flash_color)
+                    elif winner == 'O':
+                        win_flash([7, 8, 9], "win", display_on_lights_train_boolean, O_win_flash_color)
                     raise Game_Over_Winner
-
 
     def choose_char():
         global move_char
@@ -434,33 +551,35 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
                 print("Something went wrong with defining the mood position")
                 raise Execute_Error
             #return [top_left, top_mid, top_right, mid_left, mid_mid, mid_right, bottom_left, bottom_mid, bottom_right]
+            if move%2 == 1:
+                x_moves.append(move_position)
+            elif move%2 == 0:
+                o_moves.append(move_position)
 
-    def print_move_result(move, move_position):
+    def print_move_result(move, move_position, print_bool):
             if move%2 == 1:
                 if print_bool == True:
                     print("\n Move # ", move, "...... X's move.... Move Position: ", move_position)
-                x_moves.append(move_position)
             if move%2 == 0:
                 if print_bool == True:
                     print("\n Move # ", move, "......O's move.... Move Position: ", move_position)
-                o_moves.append(move_position)
 
-    def print_scaffolding(game_count):
+    def print_scaffolding(game_count, summary_print_bool):
         if summary_print_bool == True:
             print("-------------------------------------------------------")
             print("             Game ", game_count+1)
             print("-------------------------------------------------------")
 
-    def print_summary(winner_list, game_count):
+    def print_summary(winner_list, game_count, summary_print_bool):
         if summary_print_bool == True:
             print("----------------------------------------------------------------")
             print("             Summary ")
             print("----------------------------------------------------------------")
     ##    print("Winner's List: ", winner_list)
-            print("\n Number of Games: ", game_count)
-        analyze_results(winner_list)
+            # print("\n Number of Games: ", game_count)
+        analyze_results(winner_list, summary_print_bool)
 
-    def choose_move(move, move_memory, x_moves, o_moves):
+    def choose_move(move, move_memory, x_moves, o_moves, x_play_with_weights, o_play_with_weights, number_of_games):
 
         global move_position
 
@@ -505,9 +624,9 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
         if move%2 == 0 and game_count > math.floor(number_of_games/1) and x_play_with_weights_bool == False and o_play_with_weights_bool == False: #This line can be used to force x to start playing with weights partway through the training
             x_play_with_weights = not x_play_with_weights_bool
             o_play_with_weights = o_play_with_weights_bool
-        else:
-            x_play_with_weights = x_play_with_weights_bool
-            o_play_with_weights = o_play_with_weights_bool
+        # else:
+            # x_play_with_weights = x_play_with_weights_bool
+            # o_play_with_weights = o_play_with_weights_bool
             
         if x_play_with_weights == True and o_play_with_weights == False:
             if move%2 == 1:
@@ -519,74 +638,16 @@ def play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_gam
         else:
             choose_random_move()
 
+    class Game_Over_Winner(Exception): pass
 
-    # Outer while loop iterates through number of games. It runs the game then prints the end-state board and increments the game count.
-    # Inner while loop plays the game. It checks for a win then chooses the appropriate character, chooses a random move, and executes the move by setting the character into a variable. It then increments the move count.
-    while game_count < number_of_games:
+    class Game_Over_Draw(Exception): pass
 
-        if display_on_lights_boolean == 1:
-            pixels.clear()
-            pixels.show()
-        move_memory = []
-        x_moves = []
-        o_moves = []
-        move = 1
+    class Execute_Error(Exception): pass
 
-        top_left = '-'
-        top_mid = '-'
-        top_right = '-'
-        mid_left = '-'
-        mid_mid = '-'
-        mid_right = '-'
-        bottom_left = '-'
-        bottom_mid = '-'
-        bottom_right = '-'
+    X_wins = 0
+    O_wins = 0 
+    draw_wins = 0
 
-        if print_bool == True:
-            print_scaffolding(game_count)
-        
-        while 1:
+    [X_wins, O_wins, draw_wins] = play_games(x_play_with_weights_bool, o_play_with_weights_bool, number_of_games, x_win_weighting, o_win_weighting, summary_print_bool, print_once_per_game_bool, print_every_move_bool, display_on_lights_train_boolean, sleep_time_train, divisor)
 
-            try: #Check for end of game. If game over, subfunction will raise Game_Over exception, causing except below which will break
-                check_for_win(x_moves, "X")
-                check_for_win(o_moves, "O")
-                check_for_draw()
-                choose_char()
-                choose_move(move, move_memory, x_moves, o_moves)
-                execute_move(move_position)
-                if display_on_lights_boolean == 1:
-                    display_on_lights(x_moves, 'X')
-                    display_on_lights(o_moves, 'O')
-                print_move_result(move, move_position)
-                if print_every_move_bool == True:
-                    print_board()
-                time.sleep(sleep_time)
-            except Game_Over_Winner:
-                winner_list.append(move_char)
-                update_weight_vectors(x_moves, move_char)
-                break
-            except Game_Over_Draw:
-                winner_list.append("D")
-                break
-            except Execute_Error:
-                break
-
-            move = move+1
-
-        if print_bool == True:
-            print_board()
-      
-        game_count = game_count + 1
-
-    print_summary(winner_list, game_count)
-    x_weight_vector_store = open('store.pck1', 'wb')
-    o_weight_vector_store = open('store.pck2','wb')
-    pickle.dump(weight_vectors, x_weight_vector_store)
-    pickle.dump(weight_vectors_2, o_weight_vector_store)
-    x_weight_vector_store.close()
-    o_weight_vector_store.close()
-    
-
-    if display_on_lights_boolean == 1:
-        GPIO.cleanup()
-    return [X_wins, O_wins, draw_wins]
+    return[X_wins, O_wins, draw_wins]
