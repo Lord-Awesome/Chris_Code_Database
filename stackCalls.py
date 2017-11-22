@@ -1,4 +1,5 @@
 from collections import deque
+import os
 from startShow import startShow
 
 def acceptRequest(request):
@@ -8,7 +9,12 @@ def acceptRequest(request):
     else:
         #call chris's function here
         # print("Recieved this request: ", request)
-        startShow(request)
+        # startShow(request)
+	#Try something from os to spawn a new process with a much lower nice value and see how that goes
+        os.system('nice --20 /home/pi/Chris_Code_Repo/Lights-Back-End/Chris_Code_Database/env/bin/python -c "from test_dict import test_dict; test_dict()"')
+	#Want to use subprocess.Popen so I can grab the PID from it and determine if it is still running or not
+	#p = subprocess.Poen(*whatever args are needed*)
+	#p.poll() should determine if it is still open or not
 
 class RequestStack:
     def __init__(self):
