@@ -1,8 +1,0 @@
-Couldn't get the show name from the dict!
-Adafruit:  256
-Warning: could not get input_string
-Warning: could not get rainbow_bool
-Warning: could not get lights_bool
-Warning: could not get text_color
-Warning: could not get loop_count
-Warning: could not get divisor

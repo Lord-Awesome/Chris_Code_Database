@@ -5,9 +5,9 @@ def test_dict():
 
 	dict = {
 	'name': 'Big_Text_Scroller', 
-	'input_string': 'Bonus Scenes',
-	'rainbow_bool': 'True',
-	'text_color': 'Red',
+	'input_string': 'WHOO PORTAL 2',
+	'rainbow_bool': True,
+	'text_color': 'Rainbow',
 	'display_on_lights_boolean': 1, 
 	'display_on_lights_train_boolean': 1, 
 	'summary_print_bool': False, 
@@ -17,7 +17,7 @@ def test_dict():
 	'o_win_weighting': 1, 
 	'sleep_time': 0.2, 
 	'sleep_time_train': 0, 
-	'divisor': 6,
+	'divisor': 1,
 	'divisor1': 1,	
 	'divisor2': 1,
 	'divisor3': 1,
@@ -28,3 +28,5 @@ def test_dict():
 	}
 
 	startShow(dict)
+
+	print("Back in test dict")

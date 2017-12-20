@@ -3,6 +3,7 @@ def startShow(show_dict):
 
     try:
         showName = show_dict['name']
+        print("Show name: " + showName)
     except:
         print("Couldn't get the show name from the dict!")
         #return
@@ -24,6 +25,7 @@ def startShow(show_dict):
     from start_clock import start_clock
     from start_text_scroller import start_text_scroller
     from start_big_text_scroller import start_big_text_scroller
+    from dick import dick
 
     if showName == "Hue Show":
         #def start_hue_show(wait1=0, speed1=1.75, wait2=0, speed2=1.75, wait3=0, speed3=1.75, wait4=0, speed4=1.75)
@@ -367,8 +369,10 @@ def startShow(show_dict):
         try: divisor = show_dict['divisor']
         except: print("Warning: could not get divisor")
 
-        # print("Rainbow bool: ", rainbow_bool)
-
+        if input_string == "Gage Glupker":
+            print("Entering dick...")
+            dick()
+            return
 
         ### Call program ###
         if loop_count == -1:
@@ -379,4 +383,7 @@ def startShow(show_dict):
                 start_big_text_scroller(input_string, rainbow_bool, lights_bool, text_color,divisor)
         else:
             print("Invalid entry for loop_count")
+
+    else:
+        print("Invalid show name")
         

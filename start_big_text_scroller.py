@@ -1,5 +1,5 @@
 from __init__ import *
-def start_big_text_scroller(input_string = "Go Blue!", rainbow_bool = False, lights_bool = False, text_color = "Yellow", divisor = 1):
+def start_big_text_scroller(input_string = "Go Blue!", rainbow_bool = False, lights_bool = True, text_color = "Yellow", divisor = 1):
     import numpy as np
     import time
     import os
@@ -10,6 +10,7 @@ def start_big_text_scroller(input_string = "Go Blue!", rainbow_bool = False, lig
     ##input_string = "Go Blue!"l
     display_color_list = []
     letter_color = "Blue"
+
 
     try:
 

@@ -14,16 +14,16 @@ firebase_admin.initialize_app(cred)
 
 # Define globals
 # Shows should be a list of dictionaries with name, description, and queue keys
-ShowNames = ['Hue Show', 'Snake', 'Tic Tak Toe']
+ShowNames = ['Hue Show', 'Snake', 'Tic Tac Toe']
 LongShowDescriptions = {
         'Hue Show': 'This program has four parts that are customizable to run at different speeds. Part 1: simultaneous_hue_shift. All LEDs light at the same time to the same color. Color iterates through RGB spectrum. Part 2: serialized_hue_shift. Rather than all LEDs displaying the same color, each successive LED in the chain will display the next color in the spectrum. Each LED iterates through, making a rippling effect. Part 3: non_serialized_hue_shift. The LEDs change in successive order, so the colors still appear to move along the strand, but each successive color is random. Like the lights on the trim of a movie theater. Part 4: random_light_display. Each color and each placement of the color is random. Precursor to rave.py.',
         'Snake': 'This program plays the classic game of snake, but adds a few elements. The snake moves itself automatically around a grid. It looks for nom_noms which make it longer. There is a weighting system implemented to help the snake decide where to move based on the proximity of nom_noms. Though it can see nom_noms and navigate towards them, it cannot see bombs, which make it shorter. When a nom_nom or bomb is hit, the appropriate effect is applied and the item respawns somewhere else on the board. There are also caffeine pills which make the snake move faster, though this is only for visual effect. When a bomb, nom_nom, or caffeine pill is hit, the non-programmable lights will flash. If the snake gets caught in a loop, it will execute a random move to escape the loop. In text output, each node of the snake is numbered, with 1 being the head. 44 represents a bomb, 55 a caffeine pill, and 99 a nom_nom.',
-        'Tic Tak Toe': 'Long description for Tic Tak Toe'
+        'Tic Tac Toe': 'Long description for Tic Tac Toe'
         }
 ShortShowDescriptions = {
         'Hue Show': 'A visually stunning performance that demonstrates the capabilities of the lights. This program runs four sub-programs that ripple colors across the lights with varying degrees of order.',
         'Snake': 'This program plays the classic game of snake, but adds a few elements. The snake moves itself automatically around a grid. It actively looks for nom_noms which make it longer. It can hit hidden landmines that decrease its length. Caffeine pills will make it move rapidly.',
-        'Tic Tak Toe': 'Short descriptions for Tic Tak Toe.'
+        'Tic Tac Toe': 'Short descriptions for Tic Tac Toe.'
         }
 
 ShowOptions = {
@@ -267,6 +267,12 @@ ShowsJSON = json.dumps(Shows)
 def publishShows(mqtt):
     #print("Publish shows")
     #print(type(ShowsJSON))
+    stack.print_all()
+    for showDict in Shows:
+        print(stack.getIndex(showDict['name']))
+        showDict['position'] = stack.getIndex(showDict['name'])
+        # showDict.update({'position', stack.getIndex(showDict['name'])})
+    ShowsJSON = json.dumps(Shows)
     mqtt.publish( "/options", ShowsJSON)
 
 def getShowIndex(show):
@@ -283,8 +289,10 @@ def always_allowed_email(email):
         #Invalid email!
         return False
     if email not in whitelisted_emails:
+        print("not a whitelist email")
         return False
     else:
+        print("returning true")
         return True
 
 # Define event callbacks
@@ -294,6 +302,7 @@ def always_allowed_email(email):
 
 def quiet_hours():
 	time = datetime.datetime.now().time()
+	print(time.hour > 23 or time.hour < 9)
 	return time.hour < 9 or time.hour > 23;
 
 def on_message(mosq, obj, msg):
@@ -327,12 +336,13 @@ def on_message(mosq, obj, msg):
                 request_name = request_dict['name']
                 if 'options' in request_dict:
                     if validOptions(request_dict):
-                        stack.add(request_dict, request_name)
+                        stack.add(request_string, request_name)
                         # print('valid options')
                         # print(request_dict, type(request_dict['options']))
                 else:
                     # print('no options')
-                    stack.add(request_dict, request_name)
+                    stack.add(request_string, request_name)
+            publishShows(mosq)
         except Exception as ex:
             print("ERROR: could not add ", str(msg.payload), " to the stack", ex)
     if(msg.topic == "/get"):
@@ -379,11 +389,12 @@ run = True
 stack = RequestStack()
 while run:
     time.sleep(2)
-    print(stack.currentLength())
+    # print(stack.currentLength())
     if(stack.currentLength()):
         try:
             request_dict = stack.getNextRequest()
+            publishShows(client)
             acceptRequest(request_dict)
         except:
-            print("Error in decoding request")
+            print("Error in decoding request", e)
     time.sleep(2)
